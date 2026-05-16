@@ -1,5 +1,7 @@
 # 🌍 OSINT WAR ROOM
 
+> **Note:** This project has been confirmed as AI slop by the repository owner themselves across multiple issues (see [#2](https://github.com/Hue-Jhan/OSINT-War-Room/issues/2), [#3](https://github.com/Hue-Jhan/OSINT-War-Room/issues/3), [#4](https://github.com/Hue-Jhan/OSINT-War-Room/issues/4), [#6](https://github.com/Hue-Jhan/OSINT-War-Room/issues/6), [#7](https://github.com/Hue-Jhan/OSINT-War-Room/issues/7)). This project is certified AI slop.
+
 Osint War Room is a high-performance, tactical dashboard designed for tracking global conflicts, military movements, and geopolitical events in real-time. Vibecoded ehm i mean designed with a dark-mode/tactical UI, it aggregates multiple open-source intelligence (OSINT) feeds into a single, customizable, and interactive command center. 
 
 It currently tracks global conflicts, live air/naval radar, frontline Telegram intelligence, latest news, Cyber threat feeds, Stock markets, raw energy & industrial materials, crypto, live casualties, war time events, Pentagon pizza index, CCTV footage all around the world, VIX fear index, Polymarket bets, and more. Fully customizable.
