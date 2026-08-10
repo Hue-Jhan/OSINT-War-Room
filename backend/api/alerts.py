@@ -4,12 +4,11 @@ import asyncio
 import requests
 from bs4 import BeautifulSoup
 import json
-import os
 import hashlib
 from datetime import datetime
+from backend.storage import DATABASE_FILE
 
 router = APIRouter()
-DB_FILE = "backend/database.json"
 DEFAULT_CHANNELS = ["monitor_the_situation", "terroralarm", "ConflictsTracker", "aljazeeraglobal", "OSINTWarfare"]
 
 class TelegramSettings(BaseModel):
@@ -17,10 +16,10 @@ class TelegramSettings(BaseModel):
 
 def load_db():
     default_db = {"alerts": [], "news": [], "settings": {"telegram_channels": DEFAULT_CHANNELS}}
-    if not os.path.exists(DB_FILE):
+    if not DATABASE_FILE.exists():
         return default_db
     try:
-        with open(DB_FILE, "r") as f:
+        with DATABASE_FILE.open("r", encoding="utf-8") as f:
             db = json.load(f)
             if "settings" not in db: db["settings"] = {}
             if "telegram_channels" not in db["settings"]: db["settings"]["telegram_channels"] = DEFAULT_CHANNELS
@@ -29,7 +28,7 @@ def load_db():
         return default_db
 
 def save_db(data):
-    with open(DB_FILE, "w") as f:
+    with DATABASE_FILE.open("w", encoding="utf-8") as f:
         json.dump(data, f, indent=4)
 
 async def scrape_telegram():

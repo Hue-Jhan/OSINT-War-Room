@@ -264,9 +264,28 @@ export function initWebcams() {
     const newCategoryInput = document.getElementById('new-category-input');
 
     function extractYouTubeID(url) {
-        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-        const match = url.match(regExp);
-        return (match && match[2].length === 11) ? match[2] : null;
+        try {
+            const parsedUrl = new URL(url);
+            const host = parsedUrl.hostname.replace(/^www\./, '');
+            let videoId = null;
+
+            if (host === 'youtu.be') {
+                videoId = parsedUrl.pathname.split('/')[1];
+            } else if (host === 'youtube.com' || host === 'm.youtube.com') {
+                if (parsedUrl.pathname === '/watch') {
+                    videoId = parsedUrl.searchParams.get('v');
+                } else {
+                    const [type, id] = parsedUrl.pathname.split('/').filter(Boolean);
+                    if (['embed', 'live', 'shorts', 'v'].includes(type)) {
+                        videoId = id;
+                    }
+                }
+            }
+
+            return /^[A-Za-z0-9_-]{11}$/.test(videoId || '') ? videoId : null;
+        } catch {
+            return null;
+        }
     }
 
     function renderWebcams() {
@@ -293,14 +312,39 @@ export function initWebcams() {
             if (!videoId) return;
             const wrapper = document.createElement('div');
             wrapper.className = 'cam-wrapper';
-            wrapper.innerHTML = `
-                <div class="cam-hover-overlay">
-                    <button class="cam-btn" onclick="window.open('${feed.url}', '_blank')"><i class="fa-solid fa-arrow-up-right-from-square"></i></button>
-                    <button class="cam-btn" onclick="this.closest('.cam-wrapper').requestFullscreen()"><i class="fa-solid fa-expand"></i></button>
-                </div>
-                <iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&showinfo=0&modestbranding=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-                <div class="cam-overlay">${feed.title}</div>
-            `;
+
+            const actions = document.createElement('div');
+            actions.className = 'cam-hover-overlay';
+
+            const openLink = document.createElement('a');
+            openLink.className = 'cam-btn';
+            openLink.href = feed.url;
+            openLink.target = '_blank';
+            openLink.rel = 'noopener noreferrer';
+            openLink.title = `Open ${feed.title} on YouTube`;
+            openLink.setAttribute('aria-label', openLink.title);
+            openLink.innerHTML = '<i class="fa-solid fa-arrow-up-right-from-square"></i>';
+
+            const fullscreenButton = document.createElement('button');
+            fullscreenButton.type = 'button';
+            fullscreenButton.className = 'cam-btn';
+            fullscreenButton.title = `Fullscreen ${feed.title}`;
+            fullscreenButton.setAttribute('aria-label', fullscreenButton.title);
+            fullscreenButton.innerHTML = '<i class="fa-solid fa-expand"></i>';
+            fullscreenButton.addEventListener('click', () => wrapper.requestFullscreen());
+            actions.append(openLink, fullscreenButton);
+
+            const player = document.createElement('iframe');
+            player.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&mute=1&controls=1&playsinline=1&rel=0&modestbranding=1`;
+            player.title = `${feed.title} live feed`;
+            player.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+            player.allowFullscreen = true;
+            player.referrerPolicy = 'strict-origin-when-cross-origin';
+
+            const label = document.createElement('div');
+            label.className = 'cam-overlay';
+            label.textContent = feed.title;
+            wrapper.append(actions, player, label);
             container.appendChild(wrapper);
         });
     }

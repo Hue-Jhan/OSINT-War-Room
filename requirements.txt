@@ -60,9 +60,11 @@ py==1.11.0
 pycparser==3.0
 pydantic==2.12.5
 pydantic_core==2.41.5
+pyinstaller==6.15.0
 Pygments==2.19.2
 pyparsing==3.3.2
 PySocks==1.7.1
+pywebview==5.4
 python-dateutil==2.9.0.post0
 python-magic==0.4.27
 pytz==2025.2

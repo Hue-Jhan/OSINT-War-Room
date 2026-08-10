@@ -2,13 +2,15 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 import asyncio
+import sys
+from pathlib import Path
 from backend.api import news, alerts, economy, radar
 from backend.api.news import scrape_twitter
 from backend.api.alerts import scrape_telegram
 
 app = FastAPI()
 
-# How to Start: uvicorn backend.main:app --reload
+PROJECT_ROOT = Path(getattr(sys, "_MEIPASS", Path(__file__).resolve().parent.parent))
 
 origins = [
     "http://localhost:5500",
@@ -37,7 +39,7 @@ async def startup_event():
 
 @app.get("/api/status")
 async def get_status():
-    return {"status": "War Monitor Backend Active"}
+    return {"status": "Chanos War Room Backend Active"}
 
 # Mount Frontend Static Files (Must be last to avoid overriding API routes)
-app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend")
+app.mount("/", StaticFiles(directory=PROJECT_ROOT / "frontend", html=True), name="frontend")

@@ -1,6 +1,6 @@
-# 🌍 OSINT WAR ROOM
+# 🌍 CHANOS WAR ROOM
 
-Osint War Room is a high-performance, tactical dashboard designed for tracking global conflicts, military movements, and geopolitical events in real-time. Vibecoded ehm i mean designed with a dark-mode/tactical UI, it aggregates multiple open-source intelligence (OSINT) feeds into a single, customizable, and interactive command center. 
+Chanos War Room is a high-performance, tactical dashboard designed for tracking global conflicts, military movements, and geopolitical events in real-time. It aggregates multiple open-source intelligence (OSINT) feeds into a single, customizable, interactive command center with a dark tactical interface.
 
 It currently tracks global conflicts, live air/naval radar, frontline Telegram intelligence, latest news, Cyber threat feeds, Stock markets, raw energy & industrial materials, crypto, live casualties, war time events, Pentagon pizza index, CCTV footage all around the world, VIX fear index, Polymarket bets, and more. Fully customizable.
 
@@ -78,7 +78,7 @@ I vibecoded 90% of this project using Gemini extension on Vs Code, Claude, and G
 
 1) Clone the repo:
 ```bash
-git clone https://github.com/Hue-Jhan/OSINT-War-Room
+git clone https://github.com/DrChance239/OSINT-War-Room
 cd OSINT-War-Room
 ``` 
 
@@ -92,6 +92,16 @@ pip install -r requirements.txt
 uvicorn backend.main:app --reload
 ```
 > **Note:** On first load, the GDELT conflict feed and OSM military bases may take 10–30 seconds to appear, this is normal and happens because GDELT's live feed requires downloading and parsing a large ZIP. Results are cached server-side for 15 minutes (GDELT) and 6 hours (military bases) after the first successful fetch.
+
+### Windows desktop app
+
+Build a native Windows app with WebView2:
+
+```powershell
+.\build-windows.ps1
+```
+
+Open `dist\Chanos War Room\Chanos War Room.exe`. The desktop app stores its local alert cache and settings in `%LOCALAPPDATA%\ChanosWarRoom`.
 
 ---
 
@@ -212,4 +222,3 @@ I'm broke pls donate plssss
   ```
   882ViUtGxERFvajFFiR698B2DKcpKDDCgFfpb4DzJDHKevB2cgq9gYjVudj9d8Us5ahxPMVtz4sxXgpwjcSCVu8pLcrbBC5
   ```
-
